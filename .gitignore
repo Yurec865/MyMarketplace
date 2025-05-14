@@ -3,6 +3,8 @@
 # dependencies
 node_modules/
 
+config/openaiConfig.ts
+
 # Expo
 .expo/
 dist/
