@@ -19,7 +19,7 @@ TypeScript
 📦 Installation
 Make sure you have Node.js, Expo CLI, and a mobile emulator or Expo Go installed.
 
-git clone https://github.com/your-username/ai-mobile-test-app.git
+git clone https://github.com/Yurec865/MyMarketplace.git
 cd ai-mobile-test-app
 npm install
 
