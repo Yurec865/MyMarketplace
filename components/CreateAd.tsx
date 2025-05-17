@@ -22,7 +22,6 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { SelectList } from 'react-native-dropdown-select-list';
 
 const CreateAd = () => {
-  // Основні дані товару
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
@@ -30,40 +29,36 @@ const CreateAd = () => {
   const [category, setCategory] = useState('');
   const [photos, setPhotos] = useState<string[]>([]);
   
-  // Контактні дані
   const [contactName, setContactName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [location, setLocation] = useState('');
   
-  // Додаткові характеристики
-  const [availability, setAvailability] = useState('in_stock'); // in_stock або to_order
+  const [availability, setAvailability] = useState('in_stock');
   const [characteristics, setCharacteristics] = useState('');
   const [searchKeywords, setSearchKeywords] = useState('');
   
   const [loading, setLoading] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
-  // Дані для випадаючих списків
   const categories = [
-    { key: 'electronics', value: 'Електроніка' },
-    { key: 'clothing', value: 'Одяг' },
-    { key: 'furniture', value: 'Меблі' },
-    { key: 'sports', value: 'Спорт і відпочинок' },
-    { key: 'home', value: 'Дім і сад' },
+    { key: 'electronics', value: 'Electronics' },
+    { key: 'clothing', value: 'Clothing' },
+    { key: 'furniture', value: 'Furniture' },
+    { key: 'sports', value: 'Sports & Recreation' },
+    { key: 'home', value: 'Home & Garden' },
   ];
 
   const conditions = [
-    { key: 'new', value: 'Новий' },
-    { key: 'used', value: 'Б/в' },
+    { key: 'new', value: 'New' },
+    { key: 'used', value: 'Used' },
   ];
 
   const availabilityOptions = [
-    { key: 'in_stock', value: 'В наявності' },
-    { key: 'to_order', value: 'Під замовлення' },
+    { key: 'in_stock', value: 'In Stock' },
+    { key: 'to_order', value: 'To Order' },
   ];
 
   const isFormValid = () => {
-    // Перевірка обов'язкових полів
     if (!title.trim()) return false;
     if (!price.trim()) return false;
     if (!condition) return false;
@@ -80,17 +75,16 @@ const CreateAd = () => {
 
   const handleSubmit = () => {
     if (!isFormValid()) {
-      Alert.alert('Помилка', 'Будь ласка, заповніть всі обов\'язкові поля');
+      Alert.alert('Error', 'Please fill in all required fields');
       return;
     }
 
-    // TODO: Implement submission logic
-    Alert.alert('Успіх', 'Оголошення готове до публікації');
+    Alert.alert('Success', 'Advertisement is ready for publication');
   };
 
   const generateDescription = async () => {
     if (!title.trim()) {
-      Alert.alert('Помилка', 'Будь ласка, введіть назву товару');
+      Alert.alert('Error', 'Please enter the product name');
       return;
     }
 
@@ -99,12 +93,12 @@ const CreateAd = () => {
     fadeAnim.setValue(0);
 
     try {
-      const prompt = `Створи детальне оголошення про продаж товару з такими характеристиками:
-      - Назва: ${title}
-      ${price ? `- Ціна: ${price} грн` : ''}
-      ${condition ? `- Стан: ${condition}` : ''}
+      const prompt = `Create a detailed product listing with the following characteristics:
+      - Name: ${title}
+      ${price ? `- Price: ${price} UAH` : ''}
+      ${condition ? `- Condition: ${condition}` : ''}
       
-      Зроби опис привабливим для покупця, вкажи основні переваги товару та чому його варто придбати.`;
+      Make the description appealing to buyers, highlight the main advantages of the product and why it's worth buying.`;
 
       const res = await axios.post(
         'https://api.openai.com/v1/chat/completions',
@@ -113,7 +107,7 @@ const CreateAd = () => {
           messages: [
             { 
               role: 'system', 
-              content: 'Ти досвідчений копірайтер, який створює привабливі оголошення про продаж товарів. Твої описи мають бути інформативними, структурованими та переконливими.' 
+              content: 'You are an experienced copywriter who creates attractive product listings. Your descriptions should be informative, structured, and persuasive.' 
             },
             { role: 'user', content: prompt }
           ],
@@ -136,8 +130,8 @@ const CreateAd = () => {
         useNativeDriver: true,
       }).start();
     } catch (error) {
-      console.error('Помилка генерації опису:', error);
-      Alert.alert('Помилка', 'Не вдалося згенерувати опис. Спробуйте ще раз.');
+      console.error('Description generation error:', error);
+      Alert.alert('Error', 'Failed to generate description. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -147,7 +141,7 @@ const CreateAd = () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      Alert.alert('Помилка', 'Потрібен доступ до галереї!');
+      Alert.alert('Error', 'Gallery access required!');
       return;
     }
 
@@ -160,7 +154,7 @@ const CreateAd = () => {
     if (!result.canceled) {
       const newPhotos = result.assets.map(asset => asset.uri);
       if (photos.length + newPhotos.length > 10) {
-        Alert.alert('Помилка', 'Максимальна кількість фото - 10');
+        Alert.alert('Error', 'Maximum 10 photos allowed');
         return;
       }
       setPhotos([...photos, ...newPhotos]);
@@ -215,7 +209,7 @@ const CreateAd = () => {
             onPress={selectPhotos}
           >
             <Icon name="camera-plus" size={32} color="#666" />
-            <Text style={styles.addPhotoText}>Додати фото</Text>
+            <Text style={styles.addPhotoText}>Add Photo</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -228,14 +222,13 @@ const CreateAd = () => {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-        <Text style={styles.heading}>Створити оголошення</Text>
+        <Text style={styles.heading}>Create Advertisement</Text>
         
-        {/* Основна інформація */}
-        <Text style={styles.sectionTitle}>Основна інформація</Text>
+        <Text style={styles.sectionTitle}>Basic Information</Text>
         
         <TextInput
           style={styles.input}
-          placeholder="Назва товару *"
+          placeholder="Product Name *"
           placeholderTextColor="#aaa"
           value={title}
           onChangeText={setTitle}
@@ -246,7 +239,7 @@ const CreateAd = () => {
           setSelected={(val: string) => setCategory(val)}
           data={categories}
           save="key"
-          placeholder="Оберіть категорію *"
+          placeholder="Select Category *"
           boxStyles={styles.selectBox}
           dropdownStyles={styles.dropdown}
           search={false}
@@ -254,7 +247,7 @@ const CreateAd = () => {
 
         <TextInput
           style={styles.input}
-          placeholder="Ціна (грн) *"
+          placeholder="Price (UAH) *"
           placeholderTextColor="#aaa"
           value={price}
           onChangeText={setPrice}
@@ -265,7 +258,7 @@ const CreateAd = () => {
           setSelected={(val: string) => setCondition(val)}
           data={conditions}
           save="key"
-          placeholder="Оберіть стан товару *"
+          placeholder="Select Product Condition *"
           boxStyles={styles.selectBox}
           dropdownStyles={styles.dropdown}
           search={false}
@@ -275,18 +268,17 @@ const CreateAd = () => {
           setSelected={(val: string) => setAvailability(val)}
           data={availabilityOptions}
           save="key"
-          placeholder="Наявність *"
+          placeholder="Availability *"
           boxStyles={styles.selectBox}
           dropdownStyles={styles.dropdown}
           search={false}
         />
 
-        {/* Контактна інформація */}
-        <Text style={styles.sectionTitle}>Контактна інформація</Text>
+        <Text style={styles.sectionTitle}>Contact Information</Text>
         
         <TextInput
           style={styles.input}
-          placeholder="Ваше ім'я *"
+          placeholder="Your Name *"
           placeholderTextColor="#aaa"
           value={contactName}
           onChangeText={setContactName}
@@ -294,7 +286,7 @@ const CreateAd = () => {
 
         <TextInput
           style={styles.input}
-          placeholder="Номер телефону *"
+          placeholder="Phone Number *"
           placeholderTextColor="#aaa"
           value={phoneNumber}
           onChangeText={setPhoneNumber}
@@ -303,22 +295,20 @@ const CreateAd = () => {
 
         <TextInput
           style={styles.input}
-          placeholder="Місцезнаходження *"
+          placeholder="Location *"
           placeholderTextColor="#aaa"
           value={location}
           onChangeText={setLocation}
         />
 
-        {/* Фотографії */}
-        <Text style={styles.sectionTitle}>Фотографії *</Text>
+        <Text style={styles.sectionTitle}>Photos *</Text>
         {renderPhotos()}
 
-        {/* Опис та характеристики */}
-        <Text style={styles.sectionTitle}>Опис та характеристики</Text>
+        <Text style={styles.sectionTitle}>Description and Specifications</Text>
 
         <TextInput
           style={[styles.input, styles.textArea]}
-          placeholder="Детальні характеристики товару (розмір, колір, матеріал тощо)"
+          placeholder="Detailed product specifications (size, color, material, etc.)"
           placeholderTextColor="#aaa"
           value={characteristics}
           onChangeText={setCharacteristics}
@@ -328,7 +318,7 @@ const CreateAd = () => {
 
         <TextInput
           style={[styles.input, styles.textArea]}
-          placeholder="Ключові слова для пошуку (розділяйте комами)"
+          placeholder="Search keywords (separate with commas)"
           placeholderTextColor="#aaa"
           value={searchKeywords}
           onChangeText={setSearchKeywords}
@@ -346,14 +336,14 @@ const CreateAd = () => {
           ) : (
             <>
               <Icon name="auto-fix" size={20} color="#fff" style={styles.buttonIcon} />
-              <Text style={styles.buttonText}>Згенерувати опис</Text>
+              <Text style={styles.buttonText}>Generate Description</Text>
             </>
           )}
         </TouchableOpacity>
 
         {description && (
           <Animated.View style={[styles.descriptionBox, { opacity: fadeAnim }]}>
-            <Text style={styles.descriptionTitle}>Опис:</Text>
+            <Text style={styles.descriptionTitle}>Description:</Text>
             <Text style={styles.descriptionText}>{description}</Text>
           </Animated.View>
         )}
@@ -363,7 +353,7 @@ const CreateAd = () => {
           onPress={handleSubmit}
           disabled={!isFormValid()}
         >
-          <Text style={styles.submitButtonText}>Опублікувати оголошення</Text>
+          <Text style={styles.submitButtonText}>Publish Advertisement</Text>
         </TouchableOpacity>
       </ScrollView>
     </KeyboardAvoidingView>

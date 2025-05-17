@@ -10,9 +10,6 @@ export default function App() {
   const Stack = createNativeStackNavigator();
 
   return (
-    // <SafeAreaView style={{ flex: 1 }}>
-    //   <CreateAd />
-    // </SafeAreaView>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Onboarding">
         <Stack.Screen

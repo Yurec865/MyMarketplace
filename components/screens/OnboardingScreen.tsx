@@ -6,18 +6,18 @@ const { width } = Dimensions.get('window');
 
 const steps = [
   {
-    title: 'Створюйте оголошення для OLX, Facebook та інших платформ одним кліком',
-    buttonText: 'Дізнатись більше',
+    title: 'Create listings for OLX, Facebook and other platforms with one click',
+    buttonText: 'Learn More',
     icon: 'rocket-launch',
   },
   {
-    title: 'Штучний інтелект автоматично створить привабливий опис та підбере найкращі фото',
-    buttonText: 'Далі',
+    title: 'Artificial Intelligence will automatically create an attractive description and select the best photos',
+    buttonText: 'Next',
     icon: 'brain',
   },
   {
-    title: 'Економте час на розміщенні оголошень та отримуйте більше продажів',
-    buttonText: 'Почати роботу',
+    title: 'Save time on posting listings and get more sales',
+    buttonText: 'Get Started',
     icon: 'chart-line',
   },
 ];
